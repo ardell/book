@@ -1,0 +1,10 @@
+book:
+  title: The Best Book Ever
+  language: en-US
+  author:
+    display_as: John Doe
+    file_as: Doe, John
+  publisher: Awesome Publishing Inc.
+  publication_date: 2014-01-01
+  rights: Copyright ©2014 by John Doe
+
