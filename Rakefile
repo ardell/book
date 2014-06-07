@@ -27,6 +27,8 @@ pandoc --smart                                                                 \
   --variable title="#{metadata['title']}"                                      \
   --variable author="#{metadata['author']['display_as']}"                      \
   --variable date="#{metadata['publication_date']}"                            \
+  --variable cover="#{src_dir}/cover.jpg"                                      \
+  --variable graphics=true                                                     \
   --toc                                                                        \
   --toc-depth=2
 cmd

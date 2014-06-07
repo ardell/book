@@ -144,6 +144,8 @@ $endfor$
 
 \pagestyle{empty}
 \begin{document}
+\includegraphics{$cover$}
+\newpage
 $if(title)$
 \maketitle
 \thispagestyle{empty}
