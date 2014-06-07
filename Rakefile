@@ -66,7 +66,7 @@ cmd
     $?
   end
 
-  task :metadata_xml do
+  task :metadata_xml => :ensure_tmp_dir_exists do
     metadata_xml_path = "#{tmp_dir}/metadata.xml"
     xml = <<-xml
 <dc:title>#{metadata['title']}</dc:title>
@@ -102,6 +102,10 @@ xml
       # generated). Don't raise an exception here.
     end
     $?
+  end
+
+  task :ensure_tmp_dir_exists do
+    Dir.mkdir(tmp_dir) unless File.directory?(tmp_dir)
   end
 
   def metadata
