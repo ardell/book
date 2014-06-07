@@ -31,7 +31,10 @@ pandoc -o #{target_path} #{src_dir}/*.md                                       \
   --epub-metadata=#{tmp_dir}/metadata.xml                                      \
   --toc                                                                        \
   --toc-depth=2                                                                \
-  --epub-stylesheet=#{src_dir}/stylesheet.css
+  --epub-embed-font=#{lib_dir}/fonts/Inconsolata.otf                           \
+  --epub-embed-font=#{lib_dir}/fonts/MgOpenModataRegular.ttf                   \
+  --epub-embed-font=#{lib_dir}/fonts/invisible1.ttf                            \
+  --epub-stylesheet=#{lib_dir}/stylesheets/base.css
 cmd
     ok = system(command)
     if ok
@@ -70,7 +73,7 @@ xml
     if ok
       puts "Successfully generated #{target_path}"
     else
-      raise 'Generating mobi file failed.'
+      raise "Generating mobi file failed: #{$?.inspect}"
     end
     $?
   end
@@ -89,6 +92,10 @@ xml
 
   def tmp_dir
     File.join(root_dir, 'tmp')
+  end
+
+  def lib_dir
+    File.join(root_dir, 'lib')
   end
 
 end
