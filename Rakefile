@@ -87,6 +87,11 @@ xml
   end
 
   task :mobi => [ :epub, :epubcheck ] do
+    unless system('which kindlegen > /dev/null')
+      puts "WARNING: Skipping mobi generation because kindlegen is not installed. To install, run: 'brew install homebrew/binary/kindlegen'"
+      next
+    end
+
     source_path = File.join(dist_dir, 'book.epub')
     target_path = File.join(dist_dir, 'book.mobi')
     ok = system("kindlegen #{source_path}")
