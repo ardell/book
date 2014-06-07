@@ -2,13 +2,13 @@
 
 require 'yaml'
 
-namespace :autopub do
+namespace :book do
 
   task :default do
     [
-      'autopub:pdf',
-      'autopub:epub',
-      'autopub:mobi',
+      'book:pdf',
+      'book:epub',
+      'book:mobi',
     ].each {|sym| Rake::Task[sym.to_s].invoke }
   end
 
@@ -110,6 +110,6 @@ xml
 end
 
 task :default do
-  Rake::Task['autopub:default'].invoke
+  Rake::Task['book:default'].invoke
 end
 
