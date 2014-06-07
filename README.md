@@ -10,6 +10,7 @@ Markdown source. Based on: http://puppetlabs.com/blog/automated-ebook-generation
 Note: assumes installation on OS X using homebrew (http://brew.sh).
 
 1. Install pandoc: `brew install pandoc`
+1. Install MacTex (see http://tug.org/mactex/)
 1. Install kindlegen: `brew install homebrew/binary/kindlegen`
 1. (optional) Install epubcheck `brew install epubcheck`
 1. Clone this repository 

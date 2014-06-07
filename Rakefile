@@ -6,9 +6,21 @@ namespace :autopub do
 
   task :default do
     [
+      'autopub:pdf',
       'autopub:epub',
       'autopub:mobi',
     ].each {|sym| Rake::Task[sym.to_s].invoke }
+  end
+
+  task :pdf do
+    unless system('which latex')
+      puts "WARNING: Skipping pdf generation because MacTex is not installed. Get it here: http://tug.org/mactex/"
+      next
+    end
+
+    ok = system "pandoc #{src_dir}/*.md -o #{dist_dir}/book.pdf"
+    raise 'Error generating pdf.' unless ok
+    $?
   end
 
   task :epub => :metadata_xml do
@@ -21,8 +33,13 @@ pandoc -o #{target_path} #{src_dir}/*.md                                       \
   --toc-depth=2                                                                \
   --epub-stylesheet=#{src_dir}/stylesheet.css
 cmd
-    system(command)
-    puts "Successfully generated #{target_path}"
+    ok = system(command)
+    if ok
+      puts "Successfully generated #{target_path}"
+    else
+      raise 'Generating mobi file failed.'
+    end
+    $?
   end
 
   task :metadata_xml do
@@ -41,14 +58,21 @@ xml
 
   task :epubcheck do
     next unless system('which epubcheck > /dev/null')
-    system("epubcheck #{dist_dir}/book.epub")
+    ok = system("epubcheck #{dist_dir}/book.epub")
+    raise 'Epub validation failed.' unless ok
+    $?
   end
 
   task :mobi => [ :epub, :epubcheck ] do
     source_path = File.join(dist_dir, 'book.epub')
     target_path = File.join(dist_dir, 'book.mobi')
-    system("kindlegen #{source_path}")
-    puts "Successfully generated #{target_path}"
+    ok = system("kindlegen #{source_path}")
+    if ok
+      puts "Successfully generated #{target_path}"
+    else
+      raise 'Generating mobi file failed.'
+    end
+    $?
   end
 
   def root_dir
