@@ -19,7 +19,18 @@ namespace :book do
     end
 
     target_path = "#{dist_dir}/book.pdf"
-    ok = system "pandoc --smart #{src_dir}/*.md -o #{target_path}"
+    command = <<-cmd
+pandoc --smart                                                                 \
+  #{src_dir}/*.md                                                              \
+  -o #{target_path}                                                            \
+  --template=#{lib_dir}/templates/default.latex                                \
+  --variable title="#{metadata['title']}"                                      \
+  --variable author="#{metadata['author']['display_as']}"                      \
+  --variable date="#{metadata['publication_date']}"                            \
+  --toc                                                                        \
+  --toc-depth=2
+cmd
+    ok = system(command)
     if ok
       puts "Successfully generated #{target_path}"
     else
@@ -35,10 +46,10 @@ pandoc --smart                                                                 \
   #{src_dir}/*.md                                                              \
   -o #{target_path}                                                            \
   --self-contained                                                             \
-  --epub-cover-image=#{src_dir}/cover.jpg                                      \
-  --epub-metadata=#{tmp_dir}/metadata.xml                                      \
   --toc                                                                        \
   --toc-depth=2                                                                \
+  --epub-cover-image=#{src_dir}/cover.jpg                                      \
+  --epub-metadata=#{tmp_dir}/metadata.xml                                      \
   --epub-embed-font=#{lib_dir}/fonts/Inconsolata.otf                           \
   --epub-embed-font=#{lib_dir}/fonts/MgOpenModataRegular.ttf                   \
   --epub-embed-font=#{lib_dir}/fonts/invisible1.ttf                            \
@@ -54,7 +65,6 @@ cmd
   end
 
   task :metadata_xml do
-    metadata = YAML.load_file("#{src_dir}/metadata.yml")['book']
     metadata_xml_path = "#{tmp_dir}/metadata.xml"
     xml = <<-xml
 <dc:title>#{metadata['title']}</dc:title>
@@ -85,6 +95,10 @@ xml
       # generated). Don't raise an exception here.
     end
     $?
+  end
+
+  def metadata
+    YAML.load_file("#{src_dir}/metadata.yml")
   end
 
   def root_dir
