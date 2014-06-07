@@ -17,7 +17,14 @@ Note: assumes installation on OS X using homebrew (http://brew.sh).
 
 All your writing goes in the `src` (pronounced "source") directory. Chapters
 will be included in alphabetical order, which is why by default they are named
-beginning with prefixes of "01-", "02-", etc.
+beginning with prefixes of `01-`, `02-`, etc.
+
+Title, author, and other metadata are specified in `src/metadata.yml`. The
+cover image is located at `src/cover.jpg`.
+
+Styles for epub and mobi files are specified in `src/styles.css`. NOTE: if you
+want to customize the styles, it is best to add new rules to the bottom of the
+file instead of directly changing rules at the top.
 
 # Generating
 
