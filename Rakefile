@@ -13,20 +13,28 @@ namespace :autopub do
   end
 
   task :pdf do
-    unless system('which latex')
+    unless system('which latex > /dev/null')
       puts "WARNING: Skipping pdf generation because MacTex is not installed. Get it here: http://tug.org/mactex/"
       next
     end
 
-    ok = system "pandoc #{src_dir}/*.md -o #{dist_dir}/book.pdf"
-    raise 'Error generating pdf.' unless ok
+    target_path = "#{dist_dir}/book.pdf"
+    ok = system "pandoc --smart #{src_dir}/*.md -o #{target_path}"
+    if ok
+      puts "Successfully generated #{target_path}"
+    else
+      raise 'Error generating pdf file.'
+    end
     $?
   end
 
   task :epub => :metadata_xml do
     target_path = File.join(dist_dir, 'book.epub')
     command = <<-cmd
-pandoc -o #{target_path} #{src_dir}/*.md                                       \
+pandoc --smart                                                                 \
+  #{src_dir}/*.md                                                              \
+  -o #{target_path}                                                            \
+  --self-contained                                                             \
   --epub-cover-image=#{src_dir}/cover.jpg                                      \
   --epub-metadata=#{tmp_dir}/metadata.xml                                      \
   --toc                                                                        \
@@ -34,13 +42,13 @@ pandoc -o #{target_path} #{src_dir}/*.md                                       \
   --epub-embed-font=#{lib_dir}/fonts/Inconsolata.otf                           \
   --epub-embed-font=#{lib_dir}/fonts/MgOpenModataRegular.ttf                   \
   --epub-embed-font=#{lib_dir}/fonts/invisible1.ttf                            \
-  --epub-stylesheet=#{lib_dir}/stylesheets/base.css
+  --epub-stylesheet=#{src_dir}/styles.css
 cmd
     ok = system(command)
     if ok
       puts "Successfully generated #{target_path}"
     else
-      raise 'Generating epub file failed.'
+      raise 'Error generating epub file.'
     end
     $?
   end
@@ -62,7 +70,7 @@ xml
   task :epubcheck do
     next unless system('which epubcheck > /dev/null')
     ok = system("epubcheck #{dist_dir}/book.epub")
-    raise 'Epub validation failed.' unless ok
+    raise 'Error validating generated epub file.' unless ok
     $?
   end
 

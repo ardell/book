@@ -1,3 +1,8 @@
+/***
+ * DO NOT MODIFY THIS CODE, instead add your own custom styles at the bottom of
+ * this file.
+ ***/
+
 /*** From: https://github.com/mattharrison/epub-css-starter-kit ***/
 
 /* This assumes geometric header shrinkage */
@@ -709,3 +714,8 @@ tt, pre, .mono {
 /*  .color */
 /*    color: $green */
 /* */
+
+
+
+/*** Add your own custom styles below this line. ***/
+
