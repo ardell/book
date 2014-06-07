@@ -40,21 +40,21 @@ cmd
     if ok
       puts "Successfully generated #{target_path}"
     else
-      raise 'Generating mobi file failed.'
+      raise 'Generating epub file failed.'
     end
     $?
   end
 
   task :metadata_xml do
-    config = YAML.load_file("#{src_dir}/config.yml")['book']
+    metadata = YAML.load_file("#{src_dir}/metadata.yml")['book']
     metadata_xml_path = "#{tmp_dir}/metadata.xml"
     xml = <<-xml
-<dc:title>#{config['title']}</dc:title>
-<dc:language>#{config['language'] || 'en-US'}</dc:language>
-<dc:creator opf:file-as="#{config['author']['file_as']}" opf:role="aut">#{config['author']['display_as']}</dc:creator>
-<dc:publisher>#{config['publisher']}</dc:publisher>
-<dc:date opf:event="publication">#{config['publication_date']}</dc:date>
-<dc:rights>#{config['rights']}</dc:rights>
+<dc:title>#{metadata['title']}</dc:title>
+<dc:language>#{metadata['language'] || 'en-US'}</dc:language>
+<dc:creator opf:file-as="#{metadata['author']['file_as']}" opf:role="aut">#{metadata['author']['display_as']}</dc:creator>
+<dc:publisher>#{metadata['publisher']}</dc:publisher>
+<dc:date opf:event="publication">#{metadata['publication_date']}</dc:date>
+<dc:rights>#{metadata['rights']}</dc:rights>
 xml
     File.open(metadata_xml_path, 'w') {|f| f.write(xml) }
   end
@@ -73,7 +73,8 @@ xml
     if ok
       puts "Successfully generated #{target_path}"
     else
-      raise "Generating mobi file failed: #{$?.inspect}"
+      # NOTE: kindlegen fails if there are warnings (even if the mobi file is
+      # generated). Don't raise an exception here.
     end
     $?
   end
