@@ -41,7 +41,7 @@ cmd
     $?
   end
 
-  task :epub => :metadata_xml do
+  task :epub => [ :metadata_xml, :epub_css ] do
     target_path = File.join(dist_dir, 'book.epub')
     command = <<-cmd
 pandoc --smart                                                                 \
@@ -55,7 +55,7 @@ pandoc --smart                                                                 \
   --epub-embed-font=#{lib_dir}/fonts/Inconsolata.otf                           \
   --epub-embed-font=#{lib_dir}/fonts/MgOpenModataRegular.ttf                   \
   --epub-embed-font=#{lib_dir}/fonts/invisible1.ttf                            \
-  --epub-stylesheet=#{src_dir}/styles.css
+  --epub-stylesheet=#{tmp_dir}/styles.css
 cmd
     ok = system(command)
     if ok
@@ -77,6 +77,15 @@ cmd
 <dc:rights>#{metadata['rights']}</dc:rights>
 xml
     File.open(metadata_xml_path, 'w') {|f| f.write(xml) }
+  end
+
+  task :epub_css => :ensure_tmp_dir_exists do
+    css_path = "#{tmp_dir}/styles.css"
+    sources = [
+      "#{lib_dir}/stylesheets/base.css",
+      "#{src_dir}/styles.css",
+    ]
+    system("cat #{sources.join(' ')} > #{css_path}")
   end
 
   task :epubcheck do
