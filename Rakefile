@@ -13,26 +13,14 @@ namespace :book do
   end
 
   task :pdf do
-    unless system('which latex > /dev/null')
-      puts "WARNING: Skipping pdf generation because MacTex is not installed. Get it here: http://tug.org/mactex/"
+    unless system('which node > /dev/null')
+      puts "WARNING: Skipping pdf generation because nodejs is not installed. Do: `brew install node && npm install`"
       next
     end
 
     target_path = "#{dist_dir}/book.pdf"
-    command = <<-cmd
-pandoc --smart                                                                 \
-  #{src_dir}/*.md                                                              \
-  -o #{target_path}                                                            \
-  --template=#{lib_dir}/templates/default.latex                                \
-  --variable title="#{metadata['title']}"                                      \
-  --variable author="#{metadata['author']['display_as']}"                      \
-  --variable date="#{metadata['publication_date']}"                            \
-  --variable cover="#{src_dir}/cover.jpg"                                      \
-  --variable graphics=true                                                     \
-  --toc                                                                        \
-  --toc-depth=2
-cmd
-    ok = system(command)
+    command = "node #{lib_dir}/js/md2pdf.js"
+    ok      = system(command)
     if ok
       puts "Successfully generated #{target_path}"
     else

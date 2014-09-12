@@ -9,7 +9,7 @@ Note: assumes installation on OS X using homebrew (http://brew.sh).
 
 1. Install pandoc: `brew install pandoc`
 1. (optional) For Kindle (.mobi) support, install kindlegen: `brew install homebrew/binary/kindlegen`
-1. (optional) For PDF support, install MacTex for pdf support (see http://tug.org/mactex/)
+1. (optional) For PDF support, install npm dependencies: `npm install`
 1. (optional) To validate epub files, install epubcheck `brew install epubcheck`
 1. Clone this repository 
 
@@ -28,7 +28,7 @@ file instead of directly changing rules at the top.
 
 # Generating
 
-To generate both epub and mobi files, simply execute `rake` from the base of
+To generate epub, mobi, and pdf files, simply execute `rake` from the base of
 the repository.
 
 If you have epubcheck installed, your epub file will be verified before

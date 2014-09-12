@@ -1,0 +1,33 @@
+{
+  "name": "book",
+  "version": "0.1.0",
+  "description": "A tool to automate generation of epub, mobi, and pdf from markdown source.",
+  "main": "index.js",
+  "dependencies": {
+    "markdown-pdf": "~3.0.2",
+    "glob": "~4.0.5",
+    "through": "~2.3.4",
+    "mime": "~1.2.11"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ardell/book.git"
+  },
+  "keywords": [
+    "epub",
+    "mobi",
+    "kindle",
+    "pdf",
+    "markdown"
+  ],
+  "author": "Jason Ardell",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ardell/book/issues"
+  },
+  "homepage": "https://github.com/ardell/book"
+}
