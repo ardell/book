@@ -1,5 +1,5 @@
 /*** Add your own custom styles here. ***/
 
 /* Put the cover on its own page. */
-#cover { page-break-after: always; }
+h1 { page-break-before: always; }
 
